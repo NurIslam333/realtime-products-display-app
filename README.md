@@ -45,6 +45,9 @@ Set up Pusher in .env (Get credentials from Pusher):
 PUSHER_APP_ID=your_app_id
 PUSHER_APP_KEY=your_app_key
 PUSHER_APP_SECRET=your_app_secret
+PUSHER_HOST=
+PUSHER_PORT=443
+PUSHER_SCHEME="https"
 PUSHER_APP_CLUSTER=mt1
 BROADCAST_DRIVER=pusher
 QUEUE_CONNECTION=database
