@@ -1,66 +1,124 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel 12 Real-Time Product Display App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is a Laravel 12 application that fetches product data from a free public API (**Fake Store API**) and displays it in real-time using **Pusher**. The app ensures that all users viewing the page automatically see new products without refreshing.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Features
+✅ **Fetch products from Fake Store API**  
+✅ **Store products in a database**  
+✅ **Display products in real-time using Pusher**  
+✅ **Laravel broadcasting for live updates**  
+✅ **Blade and JavaScript frontend**  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 1. Installation Guide
 
-## Learning Laravel
+### Step 1: Clone the Repository
+```
+git clone https://github.com/yourusername/realtime-products.git
+cd realtime-products
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Step 2: Install Dependencies
+composer install
+npm install
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Step 3: Configure Environment
+Copy the example .env file:
+```
+cp .env.example .env
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Set your database details in .env:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=realtime_products
+DB_USERNAME=root
+DB_PASSWORD=
 
-## Laravel Sponsors
+Set up Pusher in .env (Get credentials from Pusher):
+```
+PUSHER_APP_ID=your_app_id
+PUSHER_APP_KEY=your_app_key
+PUSHER_APP_SECRET=your_app_secret
+PUSHER_APP_CLUSTER=mt1
+BROADCAST_DRIVER=pusher
+QUEUE_CONNECTION=database
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Step 4: Run Migrations
+```
+php artisan migrate
 
-### Premium Partners
+### Step 5: Start Laravel Queue
+```
+php artisan queue:work
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### Step 6: Serve the Application
+```
+php artisan serve
 
-## Contributing
+Visit: http://127.0.0.1:8000/
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 2. Usage Guide
+Click the "Fetch Products" button to retrieve products from the Fake Store API.
 
-## Code of Conduct
+Open multiple browser tabs to see real-time updates.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Whenever a new product is added, all connected users will see it instantly.
 
-## Security Vulnerabilities
+### 3. How Pusher is Integrated
+Backend (Laravel)
+Set up broadcasting in config/broadcasting.php:
+```
+'pusher' => [
+    'driver' => 'pusher',
+    'key' => env('PUSHER_APP_KEY'),
+    'secret' => env('PUSHER_APP_SECRET'),
+    'app_id' => env('PUSHER_APP_ID'),
+    'options' => [
+        'cluster' => env('PUSHER_APP_CLUSTER'),
+        'useTLS' => true,
+    ],
+],
+Create an event ProductUpdated.php to broadcast updates:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```
+class ProductUpdated implements ShouldBroadcastNow
+{
+    public function broadcastOn()
+    {
+        return new Channel('products');
+    }
+}
+Fire the event when new products are added:
+```
+event(new ProductUpdated());
+Frontend (Blade + JavaScript)
 
-## License
+Include Pusher in Blade file:
+```
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+Listen for events and update the UI dynamically:
+```
+var pusher = new Pusher("your_pusher_key", { cluster: "mt1" });
+var channel = pusher.subscribe("products");
+channel.bind("App\\Events\\ProductUpdated", function() {
+    location.reload();
+});
+### 4. API Reference
+This project uses Fake Store API to fetch products.
+
+### Example API Response:
+```
+[
+  {
+    "id": 1,
+    "title": "Product Name",
+    "price": 19.99,
+    "description": "Product description..."
+  }
+]
