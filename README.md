@@ -110,8 +110,8 @@ class ProductUpdated implements ShouldBroadcastNow
 Fire the event when new products are added:
 ```
 event(new ProductUpdated());
-Frontend (Blade + JavaScript)
 ```
+Frontend (Blade + JavaScript)
 Include Pusher in Blade file:
 ```
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
