@@ -4,6 +4,13 @@ This is a Laravel 12 application that fetches product data from a free public AP
 
 ---
 
+## 🚀 Demo
+
+🎥 **Screen Recorded Result:**  
+[Watch on Loom](https://www.loom.com/share/956929837cd14fe9b414bf1c9583c5c4?sid=ac60894c-2961-49e9-ae3a-72d10845d2f9)
+
+---
+
 ## Features
 ✅ **Fetch products from Fake Store API**  
 ✅ **Store products in a database**  
@@ -132,3 +139,7 @@ This project uses Fake Store API to fetch products.
   }
 ]
 ```
+
+### SCreen Recorded result:
+
+https://www.loom.com/share/956929837cd14fe9b414bf1c9583c5c4?sid=ac60894c-2961-49e9-ae3a-72d10845d2f9
