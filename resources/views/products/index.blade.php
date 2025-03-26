@@ -87,7 +87,7 @@
 
         Pusher.logToConsole = true;
         var pusher = new Pusher("{{ env('PUSHER_APP_KEY') }}", {
-            cluster: "mt1"
+            cluster: "ap1"
         });
 
         var channel = pusher.subscribe("products");

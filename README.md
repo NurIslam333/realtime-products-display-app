@@ -17,10 +17,11 @@ This is a Laravel 12 application that fetches product data from a free public AP
 
 ### Step 1: Clone the Repository
 ```
-git clone https://github.com/yourusername/realtime-products.git
+git clone https://github.com/NurIslam333/realtime-products.git
 cd realtime-products
 
 ### Step 2: Install Dependencies
+```
 composer install
 npm install
 
@@ -104,7 +105,7 @@ Include Pusher in Blade file:
 
 Listen for events and update the UI dynamically:
 ```
-var pusher = new Pusher("your_pusher_key", { cluster: "mt1" });
+var pusher = new Pusher({{ env('PUSHER_APP_KEY') }}, { cluster: "ap1" });
 var channel = pusher.subscribe("products");
 channel.bind("App\\Events\\ProductUpdated", function() {
     location.reload();
