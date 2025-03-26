@@ -16,20 +16,21 @@ This is a Laravel 12 application that fetches product data from a free public AP
 ## 1. Installation Guide
 
 ### Step 1: Clone the Repository
+
 ```
 git clone https://github.com/NurIslam333/realtime-products.git
 cd realtime-products
-
+```
 ### Step 2: Install Dependencies
 ```
 composer install
 npm install
-
+```
 ### Step 3: Configure Environment
 Copy the example .env file:
 ```
 cp .env.example .env
-
+```
 Set your database details in .env:
 ```
 DB_CONNECTION=mysql
@@ -38,7 +39,7 @@ DB_PORT=3306
 DB_DATABASE=realtime_products
 DB_USERNAME=root
 DB_PASSWORD=
-
+```
 Set up Pusher in .env (Get credentials from Pusher):
 ```
 PUSHER_APP_ID=your_app_id
@@ -47,19 +48,19 @@ PUSHER_APP_SECRET=your_app_secret
 PUSHER_APP_CLUSTER=mt1
 BROADCAST_DRIVER=pusher
 QUEUE_CONNECTION=database
-
+```
 ### Step 4: Run Migrations
 ```
 php artisan migrate
-
+```
 ### Step 5: Start Laravel Queue
 ```
 php artisan queue:work
-
+```
 ### Step 6: Serve the Application
 ```
 php artisan serve
-
+```
 Visit: http://127.0.0.1:8000/
 
 ### 2. Usage Guide
@@ -83,6 +84,7 @@ Set up broadcasting in config/broadcasting.php:
         'useTLS' => true,
     ],
 ],
+```
 Create an event ProductUpdated.php to broadcast updates:
 
 ```
@@ -93,15 +95,17 @@ class ProductUpdated implements ShouldBroadcastNow
         return new Channel('products');
     }
 }
+```
+
 Fire the event when new products are added:
 ```
 event(new ProductUpdated());
 Frontend (Blade + JavaScript)
-
+```
 Include Pusher in Blade file:
 ```
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-
+```
 
 Listen for events and update the UI dynamically:
 ```
@@ -110,6 +114,7 @@ var channel = pusher.subscribe("products");
 channel.bind("App\\Events\\ProductUpdated", function() {
     location.reload();
 });
+```
 ### 4. API Reference
 This project uses Fake Store API to fetch products.
 
@@ -123,3 +128,4 @@ This project uses Fake Store API to fetch products.
     "description": "Product description..."
   }
 ]
+```
